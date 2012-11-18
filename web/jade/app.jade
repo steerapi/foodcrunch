@@ -1,0 +1,553 @@
+// Home
+#page1(data-role='page')
+  div(data-role='content')
+    div(style='')
+      img(style='width: 280px; height: 100px;', src='http://www.crunch.com/assets/images/common_section/crunch-big-background.gif')
+    a(data-role='button', data-theme='b', href='#page2', data-icon='star', data-iconpos='left')
+      | Eat Now!
+    a(data-role='button', data-theme='c', href='#page1', data-icon='star', data-iconpos='left')
+      | Eat Later
+    div(data-role='collapsible-set', data-theme='e', data-content-theme='b')
+      div(data-role='collapsible', data-collapsed='true')
+        h3
+          | Account Settings
+    a(data-role='button', href='#page1')
+      | Manage Subscriptions
+    a(data-role='button', href='#page1')
+      | Account and Payment
+    a(data-role='button', href='#page1')
+      | Notifications and Options
+// Eat Now!
+#page2(data-role='page')
+  div(data-role='content')
+    div(data-role='navbar', data-iconpos='top')
+      ul
+        li
+          a.ui-btn-active.ui-state-persist(href='#page1', data-theme='', data-icon='')
+            | Home
+        li
+          a(href='#page2', data-theme='', data-icon='')
+            | Eat Now!
+    div(data-role='navbar', data-iconpos='top')
+      ul
+        li
+          a(href='#page4', data-theme='a', data-icon='info')
+            | Map View
+    div(data-role='fieldcontain')
+      fieldset(data-role='controlgroup')
+        label(for='eatnow.search')
+          | What are you looking for?
+        input#eatnow.search(name='', placeholder='Boloco', value='', type='search')
+    ul(data-role='listview', data-divider-theme='b', data-inset='true')
+      li(data-role='list-divider', role='heading')
+        | Favorites
+      li(data-theme='f')
+        a(href='#page1', data-transition='slide')
+          | Boloco (Mass Ave)
+          span.ui-li-count
+            | 15%
+      li(data-role='list-divider', role='heading')
+        | Nearby (less than a quarter mile)
+      li(data-theme='f')
+        a(href='#page1', data-transition='slide')
+          | Boloco (Mass Ave)
+          span.ui-li-count
+            | 15%
+      li(data-theme='f')
+        a(href='#page1', data-transition='slide')
+          | Chipotle (Mass Ave)
+          span.ui-li-count
+            | 7%
+      li(data-theme='f')
+        a(href='#page1', data-transition='slide')
+          | Chung's Chinese
+          span.ui-li-count
+            | 12%
+      li(data-role='list-divider', role='heading')
+        | Farther away
+      li(data-theme='f')
+        a(href='#page1', data-transition='slide')
+          | Curry House
+          span.ui-li-count
+            | 20%
+// Eat Later!
+#page3(data-role='page')
+  div(data-role='content')
+    div(data-role='navbar', data-iconpos='top')
+      ul
+        li
+          a(href='#page1', data-theme='', data-icon='')
+            | Home
+        li
+          a(href='#page2', data-theme='a', data-icon='')
+            | Eat Now!
+    a(data-role='button', href='#page5')
+      | Today
+    a(data-role='button', href='#page6')
+      | Tomorrow
+    a(data-role='button', href='#page7')
+      | Subscribe
+    a(data-role='button', href='#page8')
+      | Lunch Date
+// Eat Now Map
+#page4(data-role='page')
+  div(data-role='content')
+    div(data-role='navbar', data-iconpos='top')
+      ul
+        li
+          a(href='#page1', data-theme='', data-icon='')
+            | Home
+        li
+          a(href='#page2', data-theme='', data-icon='')
+            | List View
+    img(src='https://maps.googleapis.com/maps/api/staticmap?center=71 Mount Auburn Street, Cambridge, MA&zoom=15&size=288x200&markers=71 Mount Auburn Street, Cambridge, MA||24 Holyoke Street, Cambridge, MA|14 John F. Kennedy Street, Cambridge MA|1312 Massachusetts Avenue&sensor=false', height='200', width='288')
+    ul(data-role='listview', data-divider-theme='b', data-inset='true')
+      li(data-role='list-divider', role='heading')
+        | Near Me Now
+      li(data-theme='c')
+        a(href='#page1', data-transition='slide')
+          | Boloco (Mt. Auburn)
+          span.ui-li-count
+            | 15%
+      li(data-theme='c')
+        a(href='#page1', data-transition='slide')
+          | Spice (Holyoke)
+          span.ui-li-count
+            | 6%
+      li(data-theme='c')
+        a(href='#page1', data-transition='slide')
+          | JP Licks (Mass Ave)
+          span.ui-li-count
+            | 8%
+// Today
+#page5(data-role='page')
+  div(data-role='content')
+    div(data-role='navbar', data-iconpos='right')
+      ul
+        li
+          a(href='#page6', data-theme='', data-icon='')
+            | Tomorrow
+        li
+          a(href='#page5', data-theme='', data-icon='')
+            | Subscribe
+        li
+          a(href='#page5', data-theme='', data-icon='')
+            | Lunch date
+    h2
+      | Eat Today!
+    div(style='')
+      img(style='width: 288px; height: 150px;', src='http://www.studyzone.org/testprep/math4/e/dogchart.jpg')
+    a(data-role='button', data-theme='b', href='#page5')
+      | Hybrid
+    a(data-role='button', href='#page5')
+      | Restaurant View
+    a(data-role='button', href='#page5')
+      | Time View
+// Tomorrow
+#page6(data-role='page')
+  div(data-role='content')
+// Subscribe
+#page7(data-role='page')
+  div(data-role='content')
+// Manage Subscriptions
+#page10(data-role='page')
+  div(data-role='content')
+    div(data-role='navbar', data-iconpos='top')
+      ul
+        li
+          a(href='#page10', data-theme='', data-icon='')
+            | Home
+        li
+          a(href='#page10', data-theme='', data-icon='')
+            | Help
+    h2
+      | Manage Subscriptions
+    ul(data-role='listview', data-divider-theme='b', data-inset='true')
+      li(data-role='list-divider', role='heading')
+        | Active Subscriptions
+      li(data-theme='c')
+        a(href='#page1', data-transition='slide')
+          | Boloco (March)
+          span.ui-li-count
+            | 2 weeks rem.
+    ul(data-role='listview', data-divider-theme='b', data-inset='true')
+      li(data-role='list-divider', role='heading')
+        | Past Subscriptions
+      li(data-theme='c')
+        a(href='#page1', data-transition='slide')
+          | Boloco (MWF)
+          span.ui-li-count
+            | Resubscribe
+      li(data-theme='c')
+        a(href='#page1', data-transition='slide')
+          | Danielle's (Feb)
+          span.ui-li-count
+            | Resubscribe
+      li(data-theme='c')
+        a(href='#page1', data-transition='slide')
+          | Mac's Chili House
+          span.ui-li-count
+            | Resubscribe
+// Lunch Date
+#page8(data-role='page')
+  div(data-role='content')
+// Account and Payment
+#page11(data-role='page')
+  div(data-role='content')
+    div(data-role='navbar', data-iconpos='top')
+      ul
+        li
+          a(href='#page11', data-theme='', data-icon='')
+            | Home
+        li
+          a(href='#page11', data-theme='', data-icon='')
+            | Home
+// Eat Now Boloco
+#page12(data-role='page')
+  div(data-role='content')
+    div(data-role='navbar', data-iconpos='top')
+      ul
+        li
+          a(href='#page1', data-theme='', data-icon='')
+            | Home
+        li
+          a(href='#page12', data-theme='b', data-icon='')
+            | ???
+    h2
+      | Boloco
+    div
+      p
+        b
+          | Time Left:
+          span(style='color: rgb(255, 0, 0);')
+            | 8:37
+    div
+      p
+        b
+          | Discount:
+          span(style='color: rgb(10, 5, 127);')
+            | 15%
+    div(data-role='fieldcontain')
+      label(for='selectmenu1')
+        | Favorites
+      select(name='')
+        option(value='option1')
+          | Beef Taco
+        option(value='option2')
+          | Chicken Burrito
+        option(value='option3')
+          | Rice & Bean Plate
+        option(value='option4')
+          | Steak Burrito
+    div(data-role='fieldcontain')
+      label(for='selectmenu2')
+        | Quantity
+      select(name='')
+        option(value='1')
+          | 1
+        option(value='2')
+          | 2
+        option(value='3')
+          | 3
+        option(value='4')
+          | 4
+        option(value='5')
+          | 5
+        option(value='6')
+          | 6
+        option(value='7')
+          | 7
+        option(value='8')
+          | 8
+        option(value='9')
+          | 9
+        option(value='10')
+          | 10
+    a(data-role='button', data-theme='e', href='#page16')
+      | Full Menu
+// Boloco Subscription Active
+#page13(data-role='page')
+  div(data-role='content')
+    div(data-role='navbar', data-iconpos='top')
+      ul
+        li
+          a(href='#page1', data-theme='', data-icon='')
+            | Home
+        li
+          a(href='#page10', data-theme='b', data-icon='')
+            | Manage Subscriptions
+    h2
+      | Current Subscription
+    div
+      a(href='', data-transition='fade')
+        | Resubscribe
+    div
+      a(href='', data-transition='fade')
+        | Cancel
+    div
+      pre.
+        \n                                    
+                                        
+      pre.
+        \n                                    
+                                        
+      pre.
+        \n                                    
+                                        
+    #checkboxes1(data-role='fieldcontain')
+      fieldset(data-role='controlgroup', data-type='vertical', data-mini='true')
+        legend
+          | Days
+        input#checkbox1(name='Monday', type='checkbox')
+        label(for='checkbox1')
+          | Monday
+        input#checkbox2(name='', type='checkbox')
+        label(for='checkbox2')
+          | Tuesday
+        input#checkbox3(name='', type='checkbox')
+        label(for='checkbox3')
+          | Wednesday
+        input#checkbox4(name='', type='checkbox')
+        label(for='checkbox4')
+          | Thursday
+        input#checkbox5(name='', type='checkbox')
+        label(for='checkbox5')
+          | Friday
+        input#checkbox6(name='', type='checkbox')
+        label(for='checkbox6')
+          | Saturday
+        input#checkbox7(name='', type='checkbox')
+        label(for='checkbox7')
+          | Sunday
+// Cancel Subscription
+#page14(data-role='page')
+  div(data-role='content')
+    div(data-role='navbar', data-iconpos='top')
+      ul
+        li
+          a(href='#page14', data-theme='', data-icon='')
+            | Home
+        li
+          a(href='#page10', data-theme='', data-icon='')
+            | Manage Subscriptions
+    h2
+      | Cancel Subscription
+    div
+      p
+        b
+          | Prepaid subscriptions cannot be cancelled for a current week.  Reduction
+          | in subscription time will result in a prorated charge of discount
+    a(data-role='button', href='#page14')
+      | Go Back
+    a(data-role='button', href='#page14')
+      | Cancel
+// Full Menu Boloco
+#page17(data-role='page')
+  div(data-role='content')
+    div(data-role='navbar', data-iconpos='top')
+      ul
+        li
+          a(href='#page1', data-theme='', data-icon='')
+            | Home
+        li
+          a(href='#page12', data-theme='b', data-icon='')
+            | Eat Now
+    h2
+      | Boloco
+    div
+      p
+        b
+          span(style='font-size: large;')
+            | Menu
+          span(style='color: rgb(255, 0, 0);', data-mce-style='color: #ff0000;')
+    div(data-role='fieldcontain')
+      label(for='selectmenu5')
+        | Favorites
+      select(name='')
+        option(value='option1')
+          | Bangkok Thai Burrito
+        option(value='option2')
+          | Buffalo Burrito
+        option(value='option3')
+          | Cajun Burrito
+        option(value='option4')
+          | Classic Mexican Burrito
+        option(value='option5')
+          | Life Is Good Burrito
+        option(value='option6')
+          | Memphis BBQ Burrito
+        option(value='option7')
+          | Spicy BLT Burrito
+        option(value='option8')
+          | Teriyaki Burrito
+        option(value='option9')
+          | Tikka Masala Burrito
+        option(value='option10')
+          | Yucatan Haberno Burrito
+        option(value='option11')
+          | Chips & Guacamole
+        option(value='option12')
+          | Chips & Salsa
+        option(value='option13')
+          | Guacamole
+        option(value='option14')
+          | Nutella Cookie
+        option(value='option15')
+          | Berry Blitz Smoothie
+        option(value='option16')
+          | Cape Codder Smoothie
+        option(value='option17')
+          | Mango Passion Smoothie
+        option(value='option18')
+          | Strawberry Smoothie
+    div(data-role='fieldcontain')
+      label(for='selectmenu6')
+        | Quantity
+      select(name='')
+        option(value='1')
+          | 1
+        option(value='2')
+          | 2
+        option(value='3')
+          | 3
+        option(value='4')
+          | 4
+        option(value='5')
+          | 5
+        option(value='6')
+          | 6
+        option(value='7')
+          | 7
+        option(value='8')
+          | 8
+        option(value='9')
+          | 9
+        option(value='10')
+          | 10
+    div
+      b
+        | Enter content here...
+    a(data-role='button', data-theme='b', href='#page17')
+      | Add To Cart
+    a(data-role='button', data-theme='b', href='#page17')
+      | 1 Click Order
+    a(data-role='button', data-theme='b', href='#page17')
+      | Checkout
+// FoodCrunch Merchant
+#page16(data-role='page')
+  div(data-role='content')
+    h2
+      | FoodCrunch Merchant
+    a(data-role='button', href='#page16')
+      | Manage Discounts
+    a(data-role='button', href='#page16')
+      | Flash Sale
+    a(data-role='button', href='#page16')
+      | Expected Demand
+    ul(data-role='listview', data-divider-theme='b', data-inset='true')
+      li(data-role='list-divider', role='heading')
+        | Food Crunch Options
+      li(data-theme='c')
+        a(href='#page1', data-transition='slide')
+          | Manage Labor
+      li(data-theme='c')
+        a(href='#page1', data-transition='slide')
+          | Manage Discount Factor
+      li(data-theme='c')
+        a(href='#page1', data-transition='slide')
+          | Manage Options
+    a(data-role='button', href='#page16')
+    a(data-role='button', data-theme='e', href='#page18')
+      | Nearby Customers
+    a(data-role='button', data-theme='e', href='#page16')
+      | Loyalty
+// Nearby Customers
+#page18(data-role='page')
+  div(data-role='content')
+    h2
+      | Nearby Customers
+    h3
+      | You must have Aqui enabled to view nearby customers
+// Manage Discounts
+#page19(data-role='page')
+  div(data-role='content')
+    div(data-role='navbar', data-iconpos='top')
+      ul
+        li
+          a(href='#page16', data-theme='', data-icon='')
+            | Home
+        li
+          a(href='#page19', data-theme='', data-icon='')
+            | View Demand
+    h2
+      | Manage Discounts
+    div
+      p
+        b
+          | Slide bars up and down to manage discounts
+      p
+        b
+          | //(add + / - / 0) sign to left of graph
+    div(style='text-align: center;')
+      img(style='width: 300px; height: 200px;', src='http://www.studyzone.org/testprep/math4/e/dogchart.jpg')
+    div(data-role='fieldcontain')
+      label(for='selectmenu7')
+        | Day
+      select(name='', data-theme='b')
+        option(value='option1')
+          | Today
+        option(value='value')
+          | Tomorrow
+        option(value='value')
+          | Wednesday
+        option(value='value')
+          | Thursday
+        option(value='value')
+          | Friday
+        option(value='value')
+          | Saturday
+        option(value='value')
+          | Sunday
+// Expected Demand Merchant
+#page20(data-role='page')
+  div(data-role='content')
+    div(data-role='navbar', data-iconpos='top')
+      ul
+        li
+          a(href='#page16', data-theme='', data-icon='')
+            | Home
+        li
+          a(href='#page19', data-theme='', data-icon='')
+            | Manage Discount
+        li
+          a(href='#page20', data-theme='', data-icon='')
+            | Flash Sale
+    h2
+      | Expected Demand
+    div
+      p
+        b
+          | Stacked bar chart:
+      ul
+        li
+          b
+            | Baseline expected demand
+        li
+          b
+            | Current pre-orders
+        li
+          b
+            | Current subscriptions
+      p
+        b
+          br
+      p
+        b
+          | Capacity (on top)
+      p
+        b
+          br
+    div(style='width: 288px; height: 100px; position: relative; background-color: #fbfbfb; border: 1px solid #b8b8b8;')
+      img(src='http://codiqa.com/static/images/v2/image.png', alt='image', style='position: absolute; top: 50%; left: 50%; margin-left: -16px; margin-top: -18px;')
+    a(data-role='button', href='#page20')
+      | View Data
