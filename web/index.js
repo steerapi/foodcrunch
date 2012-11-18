@@ -511,7 +511,11 @@ EatLater = function($scope, $http, $rootScope) {
 
 Subscribe = function($scope) {};
 
-LunchDate = function($scope) {};
+LunchDate = function($scope, $http) {
+  return $scope.invite = function() {
+    return window.location.pathname = "/facebook";
+  };
+};
 
 ManageSubscriptions = function($scope) {};
 

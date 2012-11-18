@@ -417,7 +417,13 @@ EatLater = ($scope, $http, $rootScope)->
     update(newV)
   
 Subscribe = ($scope)->
-LunchDate = ($scope)->
+LunchDate = ($scope,$http)->
+  $scope.invite = ->
+    window.location.pathname = "/facebook"
+    # req = $http.get "/facebook"
+    # req.success ->
+    # req.error ->
+
 ManageSubscriptions = ($scope)->
 AccountsPayments = ($scope)->
 

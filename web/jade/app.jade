@@ -70,7 +70,7 @@
         a(data-role='button', href='#pageNotificationsOptions', ng-click="notificationsOptions()")
           | Notifications and Options
   img(style='width: 48px; height: 48px;', src="http://www.crunchbase.com/assets/images/resized/0015/2241/152241v8-max-250x250.png")
-  //- img(style='width: 48px; height: 48px;', src="http://mdzlog.files.wordpress.com/2011/05/singly-logo-20110527.png?w=700")
+  img(style='width: 48px; height: 48px;', src="http://mdzlog.files.wordpress.com/2011/05/singly-logo-20110527.png?w=700")
 // Eat Now!
 #pageEatNow(data-add-back-btn="true", data-role='page', ng-controller="EatNow")
   div(data-role='tabbar', data-iconpos='top', data-theme='a')
@@ -260,7 +260,7 @@
           | 12:45
         option(value='value')
           | 1:00
-    a(data-role='button', href='#page20')
+    a(data-role='button', ng-click="invite()")
       | Invite!
 
 // Accounts and Payments
