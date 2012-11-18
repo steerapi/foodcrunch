@@ -1,14 +1,66 @@
+ForgotPass = ($scope,$rootScope,$http)->
+  
+Signup = ($scope,$rootScope, $http)->
+  $scope.username = ""
+  $scope.password = ""
+  $scope.email = ""  
+  $scope.signup =->
+    Kinvey.User.create
+      username: $scope.username
+      password: $scope.password
+      email: $scope.email
+    ,
+      success: (user)->
+        entity = new Kinvey.Entity
+          email: $scope.email
+        , "Customer"
+        entity.save
+          success: (customer)->
+            user.set "type",
+              customer_id: customer.get "_id"
+            user.save
+              success: ->
+                $.mobile.changePage "#pageHome"
+                $rootScope.$emit "toHome", ->
+        
+      error: ->
+
+Splash = ($scope,$rootScope,$http)->
+  $scope.username = ""
+  $scope.password = ""
+  $scope.login =->
+    user = new Kinvey.User()
+    user.login $scope.username, $scope.password,
+      success: (user)->
+        $.mobile.changePage "#pageHome"
+        $rootScope.$emit "toHome", ->
+      error: ->
+  $scope.loginWithFacebook = ->
+    #TODO
+  $scope.forgot =-> 
+    req = $http.get "/reset?username=#{$scope.username}"
+    req.success ->
+      $.mobile.changePage "#pageForgotPass"
+
 #Page
 Days=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
-Home = ($scope)->
+Home = ($scope,$rootScope)->
   $scope.firstName = ""
   $scope.lastName = ""
+  $rootScope.$on "toHome", ->
+    user = Kinvey.getCurrentUser()
+    $scope.firstName =user.get "first_name"
+    $scope.lastName =user.get "last_name"
   $scope.saveSettings = ->
     user = Kinvey.getCurrentUser()
     user.set "first_name", $scope.firstName
     user.set "last_name", $scope.lastName
     user.save()
-
+  $scope.eatNow = ->
+    $rootScope.$emit "toEatNow"
+  $scope.eatLater = ->
+    $rootScope.$emit "toEatLater"
+    
 GraphRestLater = ($scope,$rootScope)->
   $scope.invervalTitle = "10:00"
   $rootScope.$on "changeGraphRestLater", (e,timeid)->
@@ -49,7 +101,7 @@ GraphTimeLater = ($scope,$rootScope)->
   $rootScope.$on "changeGraphTimeLater", (e,rest)->
     $scope.restTitle = rest.name
   
-SearchRestLater = ($scope,$rootScope)->
+SearchRestLater = ($scope,$rootScope,$http)->
   $scope.search = ""
   $scope.favorites = [
     name: "Boloco"
@@ -69,68 +121,89 @@ SearchRestLater = ($scope,$rootScope)->
     id: "xxxx"    
   ]
   $rootScope.$on "changeSearchRestLater",(e)->
-  $scope.select = (rest)->
-    $rootScope.$emit "changeGraphTimeLater",rest
-    $.mobile.changePage "#pageGraphTimeLater"
-  $scope.doSearch = ->
+    console.log "doSearch"
     user = Kinvey.getCurrentUser()
     url = "/favorites?id="+user.get "_id"
     req = $http.get url
     req.success (data, status, headers, config)->
-      $scope.favorites = data.favorites
-    req.error (data, status, headers, config)->
-    url = "/nearbys?q=#{$scope.search}&loc=#{$scope.location}&within=#{1600}"
-    req = $http.get url
-    req.success (data, status, headers, config)->
-      $scope.nearbys = data.nearbys
-    req.error (data, status, headers, config)->
+      console.log data
+      $scope.favorites = []
+      data.forEach (item)->
+        $scope.favorites.push item
+  $scope.lat = 42.38
+  $scope.long = -71.03
+  $scope.select = (rest)->
+    $rootScope.$emit "changeGraphTimeLater",rest
+    $.mobile.changePage "#pageGraphTimeLater"
+  $scope.doSearch = ->
+    # req.error (data, status, headers, config)->
+    # url = "/nearbys?lat=#{$scope.lat}&long=#{$scope.long}&within=#{1600}"
+    # req = $http.get url
+    # req.success (data, status, headers, config)->
+    #   $scope.nearbys = data.nearbys
+    # req.error (data, status, headers, config)->
  
 EatNow = ($scope, $rootScope, $http, $timeout)->
   $scope.showMap = false
   $scope.search = ""
   $scope.favorites = [
     name: "Boloco"
-    address: "Mass Ave"
+    street_address: "Mass Ave"
     discount: "10"
     id: "xxxx"
   ,
     name: "Boloco"
-    address: "Mass Ave"
+    street_address: "Mass Ave"
     discount: "10"
     id: "xxxx"  
   ]
   $scope.nearbys = [
     name: "Boloco"
-    address: "Mass Ave"
+    street_address: "Mass Ave"
     discount: "10"
     id: "xxxx"    
   ]
 
-  $scope.location = [52.2100, 0.1300]
+  $scope.lat = 42.38
+  $scope.long = -71.03
   $scope.select = (rest)->
     console.log "select", arguments
     $rootScope.$emit "changeEatNowRestaurant",rest
     $.mobile.changePage "#pageEatNowRestaurant"
   $scope.doSearch = ->
-    user = Kinvey.getCurrentUser()
-    url = "/favorites?id="+user.get "_id"
-    req = $http.get url
-    req.success (data, status, headers, config)->
-      $scope.favorites = data
-    req.error (data, status, headers, config)->
-
-    url = "/nearbys?q=#{$scope.search}&loc=#{$scope.location}&within=#{1600}"
-    req = $http.get url
-    req.success (data, status, headers, config)->
-      $scope.updateNearbys data
-    req.error (data, status, headers, config)->
-
+    
   $scope.updateNearbys = (nearbys)->
-    $scope.mapSrc = "https://maps.googleapis.com/maps/api/staticmap?center=71 Mount Auburn Street, Cambridge, MA&zoom=15&size=288x200&markers=71 Mount Auburn Street, Cambridge, MA||24 Holyoke Street, Cambridge, MA|14 John F. Kennedy Street, Cambridge MA|1312 Massachusetts Avenue&sensor=false"
+    url = "/map"
+    req = $http.get url
+    req.success (data, status, headers, config)->
+      $scope.mapSrc = data
+      console.log "Map:",$scope.mapSrc
+    $scope.nearbys = nearbys
+    # nearbys.forEach (nearby)->
   $scope.mapSrc = ""
   $scope.tap = (map)->
     $scope.showMap = map
+  $rootScope.$on "toEatNow", ->
+    user = Kinvey.getCurrentUser()
+    url = "/favorites?user_id="+user.get("type").customer_id
+    req = $http.get url
+    req.success (data, status, headers, config)->
+      # console.log data
+      $scope.favorites = []
+      data.forEach (item)->
+        # console.log item.street_address
+        $scope.favorites.push item
+    req.error (data, status, headers, config)->
 
+    url = "/nearbys?lat=#{$scope.lat}&long=#{$scope.long}&within=#{1600}"
+    req = $http.get url
+    req.success (data, status, headers, config)->
+      console.log data
+      $scope.updateNearbys data
+      
+    req.error (data, status, headers, config)->
+    
+    
 EatLater = ($scope, $http, $rootScope)->
   getHybrid = (cb)->
     today = new Date()
@@ -167,27 +240,51 @@ EatLater = ($scope, $http, $rootScope)->
   dataHybrid = [
     label: "10:00"
     discount: 0.25
+    name: "Boloco"
+    street_address: "Mass Ave"
+    id: "xxxx"
   ,
     label: "10:15"
     discount: 0.30  
+    name: "Boloco"
+    street_address: "Mass Ave"
+    id: "xxxx"
   ,
     label: "10:30"
     discount: 0.10  
+    name: "Boloco"
+    street_address: "Mass Ave"
+    id: "xxxx"
   ,
     label: "10:45"
     discount: 0.12
+    name: "Boloco"
+    street_address: "Mass Ave"
+    id: "xxxx"
   ,
     label: "10:00"
     discount: 0.25
+    name: "Boloco"
+    street_address: "Mass Ave"
+    id: "xxxx"
   ,
     label: "10:15"
     discount: 0.30  
+    name: "Boloco"
+    street_address: "Mass Ave"
+    id: "xxxx"
   ,
     label: "10:30"
     discount: 0.10  
+    name: "Boloco"
+    street_address: "Mass Ave"
+    id: "xxxx"
   ,
     label: "10:45"
     discount: 0.12
+    name: "Boloco"
+    street_address: "Mass Ave"
+    id: "xxxx"
   ]
 
   dataTime = [
@@ -265,6 +362,8 @@ EatLater = ($scope, $http, $rootScope)->
   plotGraph = null
   plot = (data)->
     [data,ticks] = processData data
+    console.log data
+    console.log ticks
     css_id = "#placeholder"
     data = [
       data: data
@@ -282,12 +381,14 @@ EatLater = ($scope, $http, $rootScope)->
       xaxis:
         ticks: ticks
 
-    $(css_id).bind "plotclick", (event, pos, item) ->
-      console.log arguments
-      # if (item)
-      #   $("#clickdata").text("You clicked point " + item.dataIndex + " in " + item.series.label + ".")
-      #   plot.highlight(item.series, item.datapoint)
     plotGraph = $.plot $(css_id), data, options
+    $(css_id).unbind()
+    $(css_id).bind "plotclick", (event, pos, item) ->
+      if (item)
+        console.log "item"
+        selected = dataHybrid[$scope.current+item.dataIndex]
+        $rootScope.$emit "changeEatNowRestaurant", selected
+        $.mobile.changePage "#pageEatNowRestaurant"
   $scope.init()
   
   update = (newV)->

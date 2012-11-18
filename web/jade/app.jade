@@ -1,10 +1,56 @@
+// Splash 
+#pageSplash(ng-controller="Splash", data-role='page')
+  div(data-role='content')
+    div
+      p
+        br
+      p
+        br
+    div(style='text-align: center;')
+      img(style='width: 188px; height: 75px;', src='img/c76e731665c1aa65Original_188x75.png')
+    input(type='text', ng-model="username", name='username', value='',placeholder="Username")
+    input(type='password', ng-model="password", name='password', value='',placeholder="Password")
+    a(data-role='button', ng-click="login()")
+      | Log In
+    a(data-role='button', ng-click="loginWithFacebook()")
+      | Log In With Facebook
+    div
+      a(data-transition='fade', href="#pageSignup")
+        | Sign Up
+    div
+      a(data-transition='fade', ng-click="forgot()")
+        | Forgot Password?
+
+// ForgotPass
+#pageForgotPass(data-add-back-btn="true",ng-controller="ForgotPass", data-role='page')
+  div(data-role="header")
+    h3 Password reset.
+  div(data-role='content')
+    p A reset email has been sent to your email address.
+
+// Sign up 
+#pageSignup(data-add-back-btn="true",ng-controller="Signup", data-role='page')
+  div(data-role='content')
+    div
+      p
+        br
+      p
+        br
+    div(style='text-align: center;')
+      img(style='width: 188px; height: 75px;', src='img/c76e731665c1aa65Original_188x75.png')
+    input(type='text', ng-model="username", name='username', value='',placeholder="Username")
+    input(type='password', ng-model="password", name='password', value='',placeholder="Password")
+    input(type='password', ng-model="email", name='email', value='',placeholder="Email")
+    a(data-role='button', ng-click="signup()")
+      | Signup
+
 // Home
 #pageHome(data-add-back-btn="true", data-role='page', ng-controller="Home")
   div(data-role="header")
     h3 Home
   div(data-role='content')
-    div(style='')
-      img(style='width: 280px; height: 100px;', src='http://www.crunch.com/assets/images/common_section/crunch-big-background.gif')
+    div(style='text-align: center;')
+      img(style='width: 188px; height: 75px;', src='img/c76e731665c1aa65Original_188x75.png')
     a(ng-click="eatNow()",data-role='button', data-theme='b', href='#pageEatNow', data-icon='star', data-iconpos='left')
       | Eat Now!
     a(ng-click="eatLater()",data-role='button', data-theme='c', href='#pageEatLater', data-icon='star', data-iconpos='left')
@@ -23,8 +69,8 @@
           | Accounts and Payments
         a(data-role='button', href='#pageNotificationsOptions', ng-click="notificationsOptions()")
           | Notifications and Options
-  img(src="http://www.crunchbase.com/assets/images/resized/0015/2241/152241v8-max-250x250.png")
-  img(src="http://mdzlog.files.wordpress.com/2011/05/singly-logo-20110527.png?w=700")
+  img(style='width: 48px; height: 48px;', src="http://www.crunchbase.com/assets/images/resized/0015/2241/152241v8-max-250x250.png")
+  //- img(style='width: 48px; height: 48px;', src="http://mdzlog.files.wordpress.com/2011/05/singly-logo-20110527.png?w=700")
 // Eat Now!
 #pageEatNow(data-add-back-btn="true", data-role='page', ng-controller="EatNow")
   div(data-role='tabbar', data-iconpos='top', data-theme='a')
@@ -39,13 +85,13 @@
   div(data-role="header")
     h3 Eat Now!
   div(data-role='content', ng-show="showMap")
-    img(ng-src='mapSrc', height='200', width='288')
+    img(ng-src='{{mapSrc}}', height='200', width='288')
     ul(data-role='listview', data-divider-theme='b', data-inset='true')
       li(data-role='list-divider', role='heading')
         | Near Me Now
-      li(ng-repeat="item in favorites", ng-click="select(item.id)", data-theme='f')
+      li(ng-repeat="item in nearbys", ng-click="select(item.id)", data-theme='f')
         a(data-transition='slide')
-          | {{item.name}} ({{item.address}})
+          | {{item.name}} ({{item.street_address}})
           span.ui-li-count
             | {{item.discount}}%
   div(data-role='content', ng-show="!showMap")
@@ -155,14 +201,6 @@
 // Manage Subscriptions
 #pageManageSubscriptions(data-add-back-btn="true", data-role='page', ng-controller="ManageSubscriptions")
   div(data-role='content')
-    div(data-role='navbar', data-iconpos='top')
-      ul
-        li
-          a(href='#page10', data-theme='', data-icon='')
-            | Home
-        li
-          a(href='#page10', data-theme='', data-icon='')
-            | Help
     h2
       | Manage Subscriptions
     ul(data-role='listview', data-divider-theme='b', data-inset='true')
@@ -230,19 +268,6 @@
   div(data-role="header")
     h3 Accounts and Payments
   div(data-role='content')
-    div(data-role='navbar', data-iconpos='top')
-      ul
-        li
-          a(href='#page11', data-theme='', data-icon='')
-            | Home
-        li
-          a(href='#page1', data-theme='b', data-icon='')
-            | Eat Now!
-    div
-      p
-        br
-      p
-        br
     ul(data-role='listview', data-divider-theme='b', data-inset='true')
       li(data-role='list-divider', role='heading')
         | Manage Accounts

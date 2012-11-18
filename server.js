@@ -4,7 +4,7 @@ async = require("async");
 
 Kinvey.init({
     appKey: 'kid_PVFkQeQG5M',
-    appSecret: '183b25b078a24074a8a8942174e45df7'
+    masterSecret: '183b25b078a24074a8a8942174e45df7'
 });
 
 var weekday=new Array(7);
@@ -70,7 +70,6 @@ exports.getNearbyRestaurants = function(limit,radius,lat,lon,name,callback){
 		
 		res.on('end', function(){
 			jsonRes = JSON.parse(buffer);
-			
 			var output = [];
 			async.forEachSeries(jsonRes.objects,function(restaurant,callback){
 				exports.getRestaurantByLocuId(restaurant.id,function(err,ourRestaurant){
@@ -210,6 +209,20 @@ exports.getFavorites = function(id,skip,limit,callback){
 	});
 }
 
+exports.getNearbyRestaurantsMap = function(limit,radius,lat,lon,name,callback){
+	exports.getNearbyRestaurants(limit,radius,lat,lon,name,function(err,restaurants){
+		var outURL = "https://maps.googleapis.com/maps/api/staticmap?size=288x200&sensor=false&markers=";
+		for(var r=0;r<restaurants.length;r++){
+			if(restaurants[r].street_address != null){
+				var marker = restaurants[r].street_address + ',' + restaurants[r].locality + ',' + restaurants[r].region + ' ' + restaurants[r].postal_code;
+				outURL += marker + "|";
+			}
+		}
+		
+		callback(null,outURL);
+	});
+}
+
 // Get a particular restaurant by locu id
 exports.getRestaurantByLocuId = function(id,callback){
 	var query = new Kinvey.Query();
@@ -255,6 +268,9 @@ exports.getRestaurant = function(business_id,callback){
 
 // For each interval, get the restaurant with the maximum discount
 exports.getMaxDiscountRestaurantPerInterval = function(radius,lat,lon,dow,callback){
+	
+	var output = [];
+	var intervals = [];
 	for(var h=0;h<=23;h++){
 		for(var m=0;m<=3;m++){
 			var pad = "00";
@@ -262,28 +278,29 @@ exports.getMaxDiscountRestaurantPerInterval = function(radius,lat,lon,dow,callba
 			mm = m*15 + "";
 			hh = pad.substring(0, pad.length - h.length) + h;
 			mm = pad.substring(0, pad.length - mm.length) + mm;
-			var interval = hh + ":" + mm;
-			exports.getNearbyRestaurants(null,radius,lat,lon,name,function(err,restaurants){
-				async.forEach(restaurants, function(restaurant,callback){
-					exports.getRestaurant(favorite.attr.business_id,function(err,restaurant){
-						output.push(restaurant);
-						callback();
-					});
-				}, function(){
-					callback(null,output);
-				});
-			});
+			intervals.push(interval = hh + ":" + mm);
 		}
 	}
+	
+	async.forEachSeries(intervals,function(interval,callback){
+		console.log("Processing interval: " + interval);
+		getMaxRestaurantForInterval(interval,radius,lat,lon,dow,function(err,maxRest){
+			output.push({"interval": interval, "restaurant": maxRest});
+			callback();
+		});
+	}, function(){
+		callback(null,output);
+	});
 }
 
+//	(limit,radius,lat,lon,name,callback)
 getMaxRestaurantForInterval = function(interval,radius,lat,lon,dow,callback){
-	exports.getNearbyRestaurants(null,radius,lat,lon,"",function(err,restaurants){
-		//console.log("Rests " + JSON.stringify(restaurants));
-		var output = null;		
+	exports.getNearbyRestaurants(1,radius,lat,lon,"",function(err,restaurants){
+		//console.log("Restaurants: " + restaurants.length);
+		var output = restaurants[0];		
 		async.forEachSeries(restaurants, function(restaurant,callback){			
+			//console.log("Processing restaurant: " + restaurant.name);
 			exports.getRestaurantByLocuId(restaurant.id,function(err,ourRestaurant){
-				console.log("RESTO: " + JSON.stringify(ourRestaurant));
 				if(ourRestaurant != null){
 					if(output == null){
 						output = ourRestaurant;
@@ -291,7 +308,6 @@ getMaxRestaurantForInterval = function(interval,radius,lat,lon,dow,callback){
 						output = ourRestaurant;
 					}
 				}
-				
 				callback();
 			});
 		}, function(){
@@ -449,11 +465,17 @@ getIntervalDiscount = function(items,interval,business){
 // TEST CLIENT
 // ************************************************************************************************************************
 
-exports.getNearbyRestaurants(3,1600,"42.3447677","-71.1009621","",function(err,maxRest){
-	console.log(maxRest);
-});
-//getMaxRestaurantForInterval("10:00",1600,"42.3447677","-71.1009621",function(err,maxRest){
-//	console.log("RESULT " + maxRest.attr.name + " " + maxRest.attr.discount);
+// 42.38
+// -71.03
+// 1600
+
+
+//exports.getFavorites("50a8edb407e58a812800337f",0,3,function(err,response){
+//exports.getNearbyRestaurants(3,1600,42.38,-71.03,"",function(err,response){
+//	console.log(response);
 //});
+// exports.getNearbyRestaurantsMap(10,1600,"42.3447677","-71.1009621","",function(err,maxRest){
+//  console.log("RESULT " + maxRest);
+// });
 //exports.getMaxRestaurantForInterval(
 //exports.getMaxDiscountRestaurantPerInterval(null,null);

@@ -1,20 +1,20 @@
 div(data-role='fieldcontain')
   fieldset(data-role='controlgroup')
-    label(for='eatnow.search')
-      | What are you looking for?
-    input#eatnow.search(ng-model="search", ng-change="doSearch()", name='', placeholder='Boloco', value='', type='search')
+    input#eatnow.search(ng-model="search", name='', placeholder='Boloco', value='', type='search')
+  a(data-role='button', ng-click="doSearch()")
+    | Search
 ul(data-role='listview', data-divider-theme='b', data-inset='true')
   li(data-role='list-divider', role='heading')
     | Favorites
   li(ng-repeat="item in favorites", ng-click="select(item)",data-theme='f')
     a(data-transition='slide')
-      | {{item.name}} ({{item.address}})
+      | {{item.name}} ({{item.street_address}})
       span.ui-li-count
         | {{item.discount}}%
   li(data-role='list-divider', role='heading')
     | Nearby (less than a quarter mile)
   li(ng-repeat="item in nearbys", ng-click="select(item)", data-theme='f')
     a(data-transition='slide')
-      | {{item.name}} ({{item.address}})
+      | {{item.name}} ({{item.street_address}})
       span.ui-li-count
         | {{item.discount}}%
