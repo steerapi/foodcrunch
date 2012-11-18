@@ -604,6 +604,9 @@ EatNowRestaurant = function($scope, $rootScope, $timeout, $http) {
 
 Confirm = function($scope, $rootScope) {
   var calculateTotal;
+  $scope.invite = function() {
+    return window.location.pathname = "/facebook";
+  };
   $scope.carts = [
     {
       name: "Buffalo Burrito",

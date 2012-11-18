@@ -491,6 +491,8 @@ EatNowRestaurant = ($scope, $rootScope, $timeout, $http)->
     ]
 
 Confirm = ($scope,$rootScope)->
+  $scope.invite = ->
+    window.location.pathname = "/facebook"    
   $scope.carts = [
     name: "Buffalo Burrito"
     quantity: 1
