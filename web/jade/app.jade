@@ -1,126 +1,107 @@
 // Home
-#page1(data-role='page')
+#pageHome(data-add-back-btn="true", data-role='page', ng-controller="Home")
+  div(data-role="header")
+    h3 Home
   div(data-role='content')
     div(style='')
       img(style='width: 280px; height: 100px;', src='http://www.crunch.com/assets/images/common_section/crunch-big-background.gif')
-    a(data-role='button', data-theme='b', href='#page2', data-icon='star', data-iconpos='left')
+    a(ng-click="eatNow()",data-role='button', data-theme='b', href='#pageEatNow', data-icon='star', data-iconpos='left')
       | Eat Now!
-    a(data-role='button', data-theme='c', href='#page1', data-icon='star', data-iconpos='left')
+    a(ng-click="eatLater()",data-role='button', data-theme='c', href='#pageEatLater', data-icon='star', data-iconpos='left')
       | Eat Later
     div(data-role='collapsible-set', data-theme='e', data-content-theme='b')
       div(data-role='collapsible', data-collapsed='true')
         h3
           | Account Settings
-    a(data-role='button', href='#page1')
-      | Manage Subscriptions
-    a(data-role='button', href='#page1')
-      | Account and Payment
-    a(data-role='button', href='#page1')
-      | Notifications and Options
+        input(ng-model="firstName",placeholder="First Name")
+        input(ng-model="lastName",placeholder="Last Name")
+        a(ng-click="saveSettings()",data-role='button')
+          | Save Settings
+        a(data-role='button', href='#pageManageSubscriptions', ng-click="manageSubscriptions()")
+          | Manage Subscriptions
+        a(data-role='button', href='#pageAccountsPayments', ng-click="accountsPayments()")
+          | Accounts and Payments
+        a(data-role='button', href='#pageNotificationsOptions', ng-click="notificationsOptions()")
+          | Notifications and Options
+  img(src="http://www.crunchbase.com/assets/images/resized/0015/2241/152241v8-max-250x250.png")
+  img(src="http://mdzlog.files.wordpress.com/2011/05/singly-logo-20110527.png?w=700")
 // Eat Now!
-#page2(data-role='page')
-  div(data-role='content')
-    div(data-role='navbar', data-iconpos='top')
-      ul
-        li
-          a.ui-btn-active.ui-state-persist(href='#page1', data-theme='', data-icon='')
-            | Home
-        li
-          a(href='#page2', data-theme='', data-icon='')
-            | Eat Now!
-    div(data-role='navbar', data-iconpos='top')
-      ul
-        li
-          a(href='#page4', data-theme='a', data-icon='info')
-            | Map View
-    div(data-role='fieldcontain')
-      fieldset(data-role='controlgroup')
-        label(for='eatnow.search')
-          | What are you looking for?
-        input#eatnow.search(name='', placeholder='Boloco', value='', type='search')
-    ul(data-role='listview', data-divider-theme='b', data-inset='true')
-      li(data-role='list-divider', role='heading')
-        | Favorites
-      li(data-theme='f')
-        a(href='#page1', data-transition='slide')
-          | Boloco (Mass Ave)
-          span.ui-li-count
-            | 15%
-      li(data-role='list-divider', role='heading')
-        | Nearby (less than a quarter mile)
-      li(data-theme='f')
-        a(href='#page1', data-transition='slide')
-          | Boloco (Mass Ave)
-          span.ui-li-count
-            | 15%
-      li(data-theme='f')
-        a(href='#page1', data-transition='slide')
-          | Chipotle (Mass Ave)
-          span.ui-li-count
-            | 7%
-      li(data-theme='f')
-        a(href='#page1', data-transition='slide')
-          | Chung's Chinese
-          span.ui-li-count
-            | 12%
-      li(data-role='list-divider', role='heading')
-        | Farther away
-      li(data-theme='f')
-        a(href='#page1', data-transition='slide')
-          | Curry House
-          span.ui-li-count
-            | 20%
-// Eat Later!
-#page3(data-role='page')
-  div(data-role='content')
-    div(data-role='navbar', data-iconpos='top')
-      ul
-        li
-          a(href='#page1', data-theme='', data-icon='')
-            | Home
-        li
-          a(href='#page2', data-theme='a', data-icon='')
-            | Eat Now!
-    a(data-role='button', href='#page5')
-      | Today
-    a(data-role='button', href='#page6')
-      | Tomorrow
-    a(data-role='button', href='#page7')
-      | Subscribe
-    a(data-role='button', href='#page8')
-      | Lunch Date
-// Eat Now Map
-#page4(data-role='page')
-  div(data-role='content')
-    div(data-role='navbar', data-iconpos='top')
-      ul
-        li
-          a(href='#page1', data-theme='', data-icon='')
-            | Home
-        li
-          a(href='#page2', data-theme='', data-icon='')
-            | List View
+#pageEatNow(data-add-back-btn="true", data-role='page', ng-controller="EatNow")
+  div(data-role='tabbar', data-iconpos='top', data-theme='a')
+    ul
+      li
+        a(ng-class='{"ui-btn-active":!showMap,"ui-state-persist":!showMap}',href='#pageEatNow', data-theme='', data-icon='star', ng-click="tap(false)")
+          | List View
+      li
+        a(ng-class='{"ui-btn-active":showMap,"ui-state-persist":showMap}', data-theme='', data-icon='map', ng-click="tap(true)")
+          | Map View
+
+  div(data-role="header")
+    h3 Eat Now!
+  div(data-role='content', ng-show="showMap")
     img(src='https://maps.googleapis.com/maps/api/staticmap?center=71 Mount Auburn Street, Cambridge, MA&zoom=15&size=288x200&markers=71 Mount Auburn Street, Cambridge, MA||24 Holyoke Street, Cambridge, MA|14 John F. Kennedy Street, Cambridge MA|1312 Massachusetts Avenue&sensor=false', height='200', width='288')
     ul(data-role='listview', data-divider-theme='b', data-inset='true')
       li(data-role='list-divider', role='heading')
         | Near Me Now
-      li(data-theme='c')
-        a(href='#page1', data-transition='slide')
-          | Boloco (Mt. Auburn)
+      li(ng-repeat="item in favorites", ng-click="select(item.id)", data-theme='f')
+        a(data-transition='slide')
+          | {{item.name}} ({{item.address}})
           span.ui-li-count
-            | 15%
-      li(data-theme='c')
-        a(href='#page1', data-transition='slide')
-          | Spice (Holyoke)
+            | {{item.discount}}%
+  div(data-role='content', ng-show="!showMap")
+    div(data-role='fieldcontain')
+      fieldset(data-role='controlgroup')
+        label(for='eatnow.search')
+          | What are you looking for?
+        input#eatnow.search(ng-model="search", ng-change="doSearch()", name='', placeholder='Boloco', value='', type='search')
+    ul(data-role='listview', data-divider-theme='b', data-inset='true')
+      li(data-role='list-divider', role='heading')
+        | Favorites
+      li(ng-repeat="item in favorites", ng-click="select(item.id)",data-theme='f')
+        a(data-transition='slide')
+          | {{item.name}} ({{item.address}})
           span.ui-li-count
-            | 6%
-      li(data-theme='c')
-        a(href='#page1', data-transition='slide')
-          | JP Licks (Mass Ave)
+            | {{item.discount}}%
+      li(data-role='list-divider', role='heading')
+        | Nearby (less than a quarter mile)
+      li(ng-repeat="item in favorites", ng-click="select(item.id)", data-theme='f')
+        a(data-transition='slide')
+          | {{item.name}} ({{item.address}})
           span.ui-li-count
-            | 8%
+            | {{item.discount}}%
+      li(data-role='list-divider', role='heading')
+        | Farther away
+      li(ng-repeat="item in favorites", ng-click="select(item.id)",data-theme='f')
+        a(data-transition='slide')
+          | {{item.name}} ({{item.address}})
+          span.ui-li-count
+            | {{item.discount}}%
+// Eat Later!
+#pageEatLater(data-add-back-btn="true", data-role='page', ng-controller="EatLater")
+  div(data-role="header")
+    h3 Eat Later!
+  div(data-role='content')
+    div(data-role='navbar', data-iconpos='top')
+      ul
+        li
+          a(href='#pageHome', data-theme='', data-icon='')
+            | Home
+        li
+          a.ui-btn-active.ui-state-persist(href='#pageEatNow', data-theme='a', data-icon='')
+            | Eat Now!
+    a(data-role='button', href='#pageToday')
+      | Today
+    a(data-role='button', href='#pageTomorrow')
+      | Tomorrow
+    a(data-role='button', href='#pageSubscribe')
+      | Subscribe
+    a(data-role='button', href='#pageLunchDate')
+      | Lunch Date
+
 // Today
-#page5(data-role='page')
+#pageToday(data-add-back-btn="true", data-role='page', ng-controller="Today")
+  div(data-role="header")
+    h3 Today
   div(data-role='content')
     div(data-role='navbar', data-iconpos='right')
       ul
@@ -144,13 +125,19 @@
     a(data-role='button', href='#page5')
       | Time View
 // Tomorrow
-#page6(data-role='page')
+#pageTomorow(data-add-back-btn="true", data-role='page', ng-controller="Tomorrow")
+  div(data-role="header")
+    h3 Tomorrow
   div(data-role='content')
 // Subscribe
-#page7(data-role='page')
+#pageSubscribe(data-add-back-btn="true", data-role='page', ng-controller="Subscribe")
+  div(data-role="header")
+    h3 Subscribe
   div(data-role='content')
 // Manage Subscriptions
-#page10(data-role='page')
+#pageManageSubscriptions(data-add-back-btn="true", data-role='page', ng-controller="ManageSubscriptions")
+  div(data-role="header")
+    h3 Manage Subscriptions
   div(data-role='content')
     div(data-role='navbar', data-iconpos='top')
       ul
@@ -189,10 +176,14 @@
           span.ui-li-count
             | Resubscribe
 // Lunch Date
-#page8(data-role='page')
+#pageLunchDate(data-add-back-btn="true", data-role='page',ng-controller="LunchDate")
+  div(data-role="header")
+    h3 Lunch Date
   div(data-role='content')
-// Account and Payment
-#page11(data-role='page')
+// Accounts and Payments
+#pageAccountsPayments(data-add-back-btn="true", data-role='page',ng-controller="AccountsPayments")
+  div(data-role="header")
+    h3 Accounts and Payments
   div(data-role='content')
     div(data-role='navbar', data-iconpos='top')
       ul
@@ -200,49 +191,51 @@
           a(href='#page11', data-theme='', data-icon='')
             | Home
         li
-          a(href='#page11', data-theme='', data-icon='')
-            | Home
-// Eat Now Boloco
-#page12(data-role='page')
+          a(href='#page1', data-theme='b', data-icon='')
+            | Eat Now!
+    div
+      p
+        br
+      p
+        br
+    ul(data-role='listview', data-divider-theme='b', data-inset='true')
+      li(data-role='list-divider', role='heading')
+        | Manage Accounts
+      li(data-theme='c')
+        a(href='#page21', data-transition='slide')
+          | Accounts
+      li(data-role='list-divider', role='heading')
+        | Manage Payments
+      li(data-theme='c')
+        a(href='#page22', data-transition='slide')
+          | Payments
+// Eat Now Restaurant
+#pageEatNowRestaurant(data-add-back-btn="true", data-role='page',ng-controller="EatNowRestaurant")
+  div(data-role="header")
+    h3 Eat Now Restaurant
   div(data-role='content')
-    div(data-role='navbar', data-iconpos='top')
-      ul
-        li
-          a(href='#page1', data-theme='', data-icon='')
-            | Home
-        li
-          a(href='#page12', data-theme='b', data-icon='')
-            | ???
     h2
-      | Boloco
+      | {{name}}
     div
       p
         b
           | Time Left:
           span(style='color: rgb(255, 0, 0);')
-            | 8:37
+            | {{twoDigits(timeLeft/60)}}:{{twoDigits(timeLeft%60)}} m
     div
       p
         b
           | Discount:
           span(style='color: rgb(10, 5, 127);')
-            | 15%
+            | {{discount}}%
     div(data-role='fieldcontain')
       label(for='selectmenu1')
         | Favorites
-      select(name='')
-        option(value='option1')
-          | Beef Taco
-        option(value='option2')
-          | Chicken Burrito
-        option(value='option3')
-          | Rice & Bean Plate
-        option(value='option4')
-          | Steak Burrito
+      select(ng-model="itemSelected",ng-options="value for value in favorites")
     div(data-role='fieldcontain')
       label(for='selectmenu2')
         | Quantity
-      select(name='')
+      select(ng-model="quantitySelected")
         option(value='1')
           | 1
         option(value='2')
@@ -263,10 +256,13 @@
           | 9
         option(value='10')
           | 10
-    a(data-role='button', data-theme='e', href='#page16')
+
+    a(data-role='button', data-theme='b', ng-click="")
       | Full Menu
-// Boloco Subscription Active
-#page13(data-role='page')
+// Restaurant Subscription Active
+#pageRestaurantSubscriptionActive(data-add-back-btn="true", data-role='page',ng-controller="RestaurantSubscriptionActive")
+  div(data-role="header")
+    h3 Restaurant Subscription Active
   div(data-role='content')
     div(data-role='navbar', data-iconpos='top')
       ul
@@ -320,7 +316,9 @@
         label(for='checkbox7')
           | Sunday
 // Cancel Subscription
-#page14(data-role='page')
+#pageCancelSubscription(data-add-back-btn="true", data-role='page',ng-controller="CancelSubscription")
+  div(data-role="header")
+    h3 Cancel Subscription
   div(data-role='content')
     div(data-role='navbar', data-iconpos='top')
       ul
@@ -342,68 +340,18 @@
     a(data-role='button', href='#page14')
       | Cancel
 // Full Menu Boloco
-#page17(data-role='page')
+#pageFullMenuRestaurant(data-add-back-btn="true", data-role='page', ng-controller="FullMenuRestaurant")
+  div(data-role="header")
+    h3 Full Menu {{name}}
   div(data-role='content')
-    div(data-role='navbar', data-iconpos='top')
-      ul
-        li
-          a(href='#page1', data-theme='', data-icon='')
-            | Home
-        li
-          a(href='#page12', data-theme='b', data-icon='')
-            | Eat Now
-    h2
-      | Boloco
-    div
-      p
-        b
-          span(style='font-size: large;')
-            | Menu
-          span(style='color: rgb(255, 0, 0);', data-mce-style='color: #ff0000;')
     div(data-role='fieldcontain')
       label(for='selectmenu5')
-        | Favorites
-      select(name='')
-        option(value='option1')
-          | Bangkok Thai Burrito
-        option(value='option2')
-          | Buffalo Burrito
-        option(value='option3')
-          | Cajun Burrito
-        option(value='option4')
-          | Classic Mexican Burrito
-        option(value='option5')
-          | Life Is Good Burrito
-        option(value='option6')
-          | Memphis BBQ Burrito
-        option(value='option7')
-          | Spicy BLT Burrito
-        option(value='option8')
-          | Teriyaki Burrito
-        option(value='option9')
-          | Tikka Masala Burrito
-        option(value='option10')
-          | Yucatan Haberno Burrito
-        option(value='option11')
-          | Chips & Guacamole
-        option(value='option12')
-          | Chips & Salsa
-        option(value='option13')
-          | Guacamole
-        option(value='option14')
-          | Nutella Cookie
-        option(value='option15')
-          | Berry Blitz Smoothie
-        option(value='option16')
-          | Cape Codder Smoothie
-        option(value='option17')
-          | Mango Passion Smoothie
-        option(value='option18')
-          | Strawberry Smoothie
+        | Menu
+      select(ng-model="selectedMenu", ng-options="menu as menu.name for menu in menus", ng-change="test()")
     div(data-role='fieldcontain')
       label(for='selectmenu6')
         | Quantity
-      select(name='')
+      select(ng-model="selectedQuantity")
         option(value='1')
           | 1
         option(value='2')
@@ -425,129 +373,31 @@
         option(value='10')
           | 10
     div
-      b
-        | Enter content here...
-    a(data-role='button', data-theme='b', href='#page17')
+      div
+        .row-fluid(style='font-size: small;', data-mce-style='font-size: small;')
+          .span1(style='text-decoration: underline;', data-mce-style='text-decoration: underline;')
+            | Item
+          .span1(style='text-decoration: underline;', data-mce-style='text-decoration: underline;')
+            | Qty
+          .span1(style='text-decoration: underline;', data-mce-style='text-decoration: underline;')
+            | Price
+        .row-fluid(ng-repeat="cart in carts",style='font-size: small;', data-mce-style='font-size: small;')
+          .span1
+            | {{cart.name}}
+          .span1
+            | {{cart.quantity}}
+          .span1
+            | ${{cart.price.toFixed(2)}}
+    div
+      .row-fluid
+        .span1
+        .span1
+          | Total
+        .span1
+          | ${{total.toFixed(2)}}
+    a(data-role='button', data-theme='b', ng-click="addToCart()")
       | Add To Cart
-    a(data-role='button', data-theme='b', href='#page17')
+    a(data-role='button', data-theme='b', ng-click="oneClick()")
       | 1 Click Order
-    a(data-role='button', data-theme='b', href='#page17')
+    a(data-role='button', data-theme='b', ng-click="checkOut()")
       | Checkout
-// FoodCrunch Merchant
-#page16(data-role='page')
-  div(data-role='content')
-    h2
-      | FoodCrunch Merchant
-    a(data-role='button', href='#page16')
-      | Manage Discounts
-    a(data-role='button', href='#page16')
-      | Flash Sale
-    a(data-role='button', href='#page16')
-      | Expected Demand
-    ul(data-role='listview', data-divider-theme='b', data-inset='true')
-      li(data-role='list-divider', role='heading')
-        | Food Crunch Options
-      li(data-theme='c')
-        a(href='#page1', data-transition='slide')
-          | Manage Labor
-      li(data-theme='c')
-        a(href='#page1', data-transition='slide')
-          | Manage Discount Factor
-      li(data-theme='c')
-        a(href='#page1', data-transition='slide')
-          | Manage Options
-    a(data-role='button', href='#page16')
-    a(data-role='button', data-theme='e', href='#page18')
-      | Nearby Customers
-    a(data-role='button', data-theme='e', href='#page16')
-      | Loyalty
-// Nearby Customers
-#page18(data-role='page')
-  div(data-role='content')
-    h2
-      | Nearby Customers
-    h3
-      | You must have Aqui enabled to view nearby customers
-// Manage Discounts
-#page19(data-role='page')
-  div(data-role='content')
-    div(data-role='navbar', data-iconpos='top')
-      ul
-        li
-          a(href='#page16', data-theme='', data-icon='')
-            | Home
-        li
-          a(href='#page19', data-theme='', data-icon='')
-            | View Demand
-    h2
-      | Manage Discounts
-    div
-      p
-        b
-          | Slide bars up and down to manage discounts
-      p
-        b
-          | //(add + / - / 0) sign to left of graph
-    div(style='text-align: center;')
-      img(style='width: 300px; height: 200px;', src='http://www.studyzone.org/testprep/math4/e/dogchart.jpg')
-    div(data-role='fieldcontain')
-      label(for='selectmenu7')
-        | Day
-      select(name='', data-theme='b')
-        option(value='option1')
-          | Today
-        option(value='value')
-          | Tomorrow
-        option(value='value')
-          | Wednesday
-        option(value='value')
-          | Thursday
-        option(value='value')
-          | Friday
-        option(value='value')
-          | Saturday
-        option(value='value')
-          | Sunday
-// Expected Demand Merchant
-#page20(data-role='page')
-  div(data-role='content')
-    div(data-role='navbar', data-iconpos='top')
-      ul
-        li
-          a(href='#page16', data-theme='', data-icon='')
-            | Home
-        li
-          a(href='#page19', data-theme='', data-icon='')
-            | Manage Discount
-        li
-          a(href='#page20', data-theme='', data-icon='')
-            | Flash Sale
-    h2
-      | Expected Demand
-    div
-      p
-        b
-          | Stacked bar chart:
-      ul
-        li
-          b
-            | Baseline expected demand
-        li
-          b
-            | Current pre-orders
-        li
-          b
-            | Current subscriptions
-      p
-        b
-          br
-      p
-        b
-          | Capacity (on top)
-      p
-        b
-          br
-    div(style='width: 288px; height: 100px; position: relative; background-color: #fbfbfb; border: 1px solid #b8b8b8;')
-      img(src='http://codiqa.com/static/images/v2/image.png', alt='image', style='position: absolute; top: 50%; left: 50%; margin-left: -16px; margin-top: -18px;')
-    a(data-role='button', href='#page20')
-      | View Data

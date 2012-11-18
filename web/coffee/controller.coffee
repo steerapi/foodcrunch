@@ -1,86 +1,145 @@
 #Page
 Home = ($scope)->
-EatNow = ($scope)->
+  $scope.firstName = ""
+  $scope.lastName = ""
+  $scope.saveSettings = ->
+    user = Kinvey.getCurrentUser()
+    user.set "first_name", $scope.firstName
+    user.set "last_name", $scope.lastName
+    user.save()
+
+EatNow = ($scope, $rootScope, $http, $timeout)->
+  $scope.showMap = false
+  $scope.search = ""
+  $scope.favorites = [
+    name: "Boloco"
+    address: "Mass Ave"
+    discount: "10"
+    id: "xxxx"
+  ,
+    name: "Boloco"
+    address: "Mass Ave"
+    discount: "10"
+    id: "xxxx"  
+  ]
+  $scope.nearbys = [
+    name: "Boloco"
+    address: "Mass Ave"
+    discount: "10"
+    id: "xxxx"    
+  ]
+  $scope.furthers = [
+    name: "Boloco"
+    address: "Mass Ave"
+    discount: "10"
+    id: "xxxx"    
+  ]
+  $scope.location = [52.2100, 0.1300]
+  $scope.select = (id)->
+    console.log "select", arguments
+    $rootScope.$emit "changeEatNowRestaurant",id
+    $.mobile.changePage "#pageEatNowRestaurant"
+  $scope.doSearch = ->
+    user = Kinvey.getCurrentUser()
+    url = "/favorites?id="+user.get "_id"
+    req = $http.get url
+    req.success (data, status, headers, config)->
+      $scope.favorites = data.favorites
+    req.error (data, status, headers, config)->
+
+    url = "/nearbys?q=#{$scope.search}&loc=#{$scope.location}&within=#{1600}"
+    req = $http.get url
+    req.success (data, status, headers, config)->
+      $scope.nearbys = data.nearbys
+    req.error (data, status, headers, config)->
+
+    url = "/furthers?q=#{$scope.search}&loc=#{$scope.location}"
+    req = $http.get url
+    req.success (data, status, headers, config)->
+      $scope.furthers = data.furthers
+    req.error (data, status, headers, config)->
+
+  $scope.tap = (map)->
+    $scope.showMap = map
+    $timeout x=->
+      console.log $scope.showMap
+      $timeout x, 1000
+    , 1000
+    
 EatLater = ($scope)->
-EatNowMap = ($scope)->
+  
 Today = ($scope)->
 Tomorrow = ($scope)->
 Subscribe = ($scope)->
 LunchDate = ($scope)->
 ManageSubscriptions = ($scope)->
-AccountPayment = ($scope)->
-EatNowBoloco = ($scope)->
+AccountsPayments = ($scope)->
+EatNowRestaurant = ($scope, $rootScope, $timeout)->
+  $scope.name = "Boloco"
+  $scope.quantitySelected = "1"
+  $scope.timeLeft = 100 #in second
+  $scope.itemSelected = "Beef Taco"
+  $scope.favorites = ["Beef Taco","Chicken Burrito","Rice & Bean Plate","Steak Burrito"]
+  $scope.discount = 10
+  started = false
+  startCountDown = ->
+    if started
+      return
+    started = true
+    countDown()
+  stopCountDown = ->
+    started = false
+    countDown()
+  countDown = ->
+    $timeout x=->
+      $scope.timeLeft--
+      if started
+        $timeout x, 1000
+    , 1000
+  $rootScope.$on "changeEatNowRestaurant", (e, id)->
+    startCountDown()
+  $scope.twoDigits = (number)->
+    return ("0#{parseInt(number)}").slice(-2)
   
-#Components
-GraphCtrl = ($scope)->
-$ ->
-  console.log "done"
-  data = [ 
-    label: "Discounts"
-    data: [ [1, 1], [5, 5], [10, 10] ]
-  ]
-  plot = $.plot $("#placeholder"), data,
-    series:
-      bars:
-        horizontal: true
-        show: true
-    grid:
-      show: true
-      clickable: true
-  $("#placeholder").bind "plotclick", (event, pos, item) ->
-    if (item)
-      $("#clickdata").text("You clicked point " + item.dataIndex + " in " + item.series.label + ".")
-      plot.highlight(item.series, item.datapoint)
-
-#Stacked
-# $ ->
-#   console.log "done"
-#   data = [ 
-#     label: "Discounts"
-#     data: [ [1, 1], [5, 5], [10, 10] ]
-#   ]
-#   plot = $.plot $("#placeholder"), data,
-#     series:
-#       bars:
-#         horizontal: true
-#         show: true
-#     grid:
-#       show: true
-#       clickable: true
-#   $("#placeholder").bind "plotclick", (event, pos, item) ->
-#     if (item)
-#       $("#clickdata").text("You clicked point " + item.dataIndex + " in " + item.series.label + ".")
-#       plot.highlight(item.series, item.datapoint)
-
-$ ->
-  css_id = "#placeholder"
-  data = [
-    label: "foo"
-    data: [[1, 300], [2, 300], [3, 300], [4, 300], [5, 300]]
+RestaurantSubscriptionActive = ($scope)->
+CancelSubscription = ($scope)->
+  
+FullMenuRestaurant = ($scope)->
+  $scope.selectedQuantity = "1"
+  $scope.menus = [
+    name: "Bangkok Thai Burrito"
+    price: 5.99
   ,
-    label: "bar"
-    data: [[1, 800], [2, 600], [3, 400], [4, 200], [5, 0]]
+    name: "Buffalo Burrito"
+    price: 5.99
   ,
-    label: "baz"
-    data: [[1, 100], [2, 200], [3, 300], [4, 400], [5, 500]]
+    name: "Chips & Guacamole"
+    price: 2.69
   ]
-  options =
-    series:
-      stack: 0
-      lines:
-        show: false
-        steps: false
-      bars:
-        show: true
-        barWidth: 0.9
-        align: "center"
-    xaxis:
-      ticks: [[1, "One"], [2, "Two"], [3, "Three"], [4, "Four"], [5, "Five"]]
+  $scope.selectedMenu = $scope.menus[0]
+  $scope.name = "Boloco"
+  $scope.carts = [
+    name: "Buffalo Burrito"
+    quantity: 1
+    price: 5.99
+  ,
+    name: "Chips & Guacamole"
+    quantity: 1
+    price: 2.69
+  ]
+  $scope.total = 7.68
+  calculateTotal = ->
+    $scope.total = $scope.carts.reduce (itema,itemb)->
+      {price: itema.price+itemb.price}
+    .price
+  calculateTotal()   
+  $scope.addToCart = ()->
+    $scope.carts.push 
+      name: $scope.selectedMenu.name
+      price: $scope.selectedMenu.price
+      quantity: $scope.selectedQuantity      
+    calculateTotal()
+  $scope.oneClick = ->
+  $scope.checkOut = ->
 
-  $(css_id).bind "plotclick", (event, pos, item) ->
-    console.log arguments
-    # if (item)
-    #   $("#clickdata").text("You clicked point " + item.dataIndex + " in " + item.series.label + ".")
-    #   plot.highlight(item.series, item.datapoint)
 
-  $.plot $(css_id), data, options
