@@ -432,6 +432,8 @@ EatNowRestaurant = ($scope, $rootScope, $timeout, $http)->
   $scope.name = "Boloco"
   $scope.quantitySelected = "1"
   $scope.timeLeft = 100 #in second
+  $scope.invite = ->
+    window.location.pathname = "/facebook"    
   $scope.favorites = [
     _id: ""
     name: "Beef Taco"

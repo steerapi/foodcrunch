@@ -526,6 +526,9 @@ EatNowRestaurant = function($scope, $rootScope, $timeout, $http) {
   $scope.name = "Boloco";
   $scope.quantitySelected = "1";
   $scope.timeLeft = 100;
+  $scope.invite = function() {
+    return window.location.pathname = "/facebook";
+  };
   $scope.favorites = [
     {
       _id: "",
