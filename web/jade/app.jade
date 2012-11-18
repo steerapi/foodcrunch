@@ -39,7 +39,7 @@
   div(data-role="header")
     h3 Eat Now!
   div(data-role='content', ng-show="showMap")
-    img(src='https://maps.googleapis.com/maps/api/staticmap?center=71 Mount Auburn Street, Cambridge, MA&zoom=15&size=288x200&markers=71 Mount Auburn Street, Cambridge, MA||24 Holyoke Street, Cambridge, MA|14 John F. Kennedy Street, Cambridge MA|1312 Massachusetts Avenue&sensor=false', height='200', width='288')
+    img(ng-src='mapSrc', height='200', width='288')
     ul(data-role='listview', data-divider-theme='b', data-inset='true')
       li(data-role='list-divider', role='heading')
         | Near Me Now
@@ -49,95 +49,111 @@
           span.ui-li-count
             | {{item.discount}}%
   div(data-role='content', ng-show="!showMap")
-    div(data-role='fieldcontain')
-      fieldset(data-role='controlgroup')
-        label(for='eatnow.search')
-          | What are you looking for?
-        input#eatnow.search(ng-model="search", ng-change="doSearch()", name='', placeholder='Boloco', value='', type='search')
-    ul(data-role='listview', data-divider-theme='b', data-inset='true')
-      li(data-role='list-divider', role='heading')
-        | Favorites
-      li(ng-repeat="item in favorites", ng-click="select(item.id)",data-theme='f')
-        a(data-transition='slide')
-          | {{item.name}} ({{item.address}})
-          span.ui-li-count
-            | {{item.discount}}%
-      li(data-role='list-divider', role='heading')
-        | Nearby (less than a quarter mile)
-      li(ng-repeat="item in favorites", ng-click="select(item.id)", data-theme='f')
-        a(data-transition='slide')
-          | {{item.name}} ({{item.address}})
-          span.ui-li-count
-            | {{item.discount}}%
-      li(data-role='list-divider', role='heading')
-        | Farther away
-      li(ng-repeat="item in favorites", ng-click="select(item.id)",data-theme='f')
-        a(data-transition='slide')
-          | {{item.name}} ({{item.address}})
-          span.ui-li-count
-            | {{item.discount}}%
+    include searchrest
+
+#pageGraphRestLater(data-add-back-btn="true", data-role='page', ng-controller="GraphTimeLater")
+  div(data-role="header")
+    h3 {{invervalTitle}}
+  div(data-role='content')
+#pageSelectTimeLater(data-add-back-btn="true", data-role='page', ng-controller="SelectTimeLater")
+  div(data-role="header")
+    h3 Select interval
+  div(data-role='content')
+    select(ng-model="selected", ng-options="value for value in options")
+
+#pageGraphTimeLater(data-add-back-btn="true", data-role='page', ng-controller="GraphTimeLater")
+  div(data-role="header")
+    h3 {{restTitle}}
+  div(data-role='content')
+#pageSearchRestLater(data-add-back-btn="true", data-role='page', ng-controller="SearchRestLater")
+  div(data-role="header")
+    h3 Search restaurant
+  div(data-role='content')
+    include searchrest  
+
 // Eat Later!
 #pageEatLater(data-add-back-btn="true", data-role='page', ng-controller="EatLater")
-  div(data-role="header")
-    h3 Eat Later!
+  div(data-theme='a', data-role='header')
+    h3
+      | Header
   div(data-role='content')
-    div(data-role='navbar', data-iconpos='top')
-      ul
-        li
-          a(href='#pageHome', data-theme='', data-icon='')
-            | Home
-        li
-          a.ui-btn-active.ui-state-persist(href='#pageEatNow', data-theme='a', data-icon='')
-            | Eat Now!
-    a(data-role='button', href='#pageToday')
-      | Today
-    a(data-role='button', href='#pageTomorrow')
-      | Tomorrow
+    h3
+      | Max Discount
+    #placeholder(style="width:300px;height:300px")
+    .row-fluid
+      .span2
+        a(data-role='button', ng-click='prev()')
+          | Prev
+      .span2
+        a(data-role='button', ng-click='next()')
+          | Next
+    a(data-role='button', data-theme='b', href='#pageSearchRestLater', ng-click="searchRestLater()")
+      | Search restuarant
+    a(data-role='button', data-theme='b', href='#pageSelectTimeLater', ng-click="selectTimeLater()")
+      | Select time
+    a(data-role='button', data-theme='b', href='#pageInviteAFriend')
+      | Invite a Friend
     a(data-role='button', href='#pageSubscribe')
       | Subscribe
-    a(data-role='button', href='#pageLunchDate')
-      | Lunch Date
-
-// Today
-#pageToday(data-add-back-btn="true", data-role='page', ng-controller="Today")
-  div(data-role="header")
-    h3 Today
-  div(data-role='content')
-    div(data-role='navbar', data-iconpos='right')
-      ul
-        li
-          a(href='#page6', data-theme='', data-icon='')
-            | Tomorrow
-        li
-          a(href='#page5', data-theme='', data-icon='')
-            | Subscribe
-        li
-          a(href='#page5', data-theme='', data-icon='')
-            | Lunch date
-    h2
-      | Eat Today!
-    div(style='')
-      img(style='width: 288px; height: 150px;', src='http://www.studyzone.org/testprep/math4/e/dogchart.jpg')
-    a(data-role='button', data-theme='b', href='#page5')
-      | Hybrid
-    a(data-role='button', href='#page5')
-      | Restaurant View
-    a(data-role='button', href='#page5')
-      | Time View
-// Tomorrow
-#pageTomorow(data-add-back-btn="true", data-role='page', ng-controller="Tomorrow")
-  div(data-role="header")
-    h3 Tomorrow
-  div(data-role='content')
+    
 // Subscribe
 #pageSubscribe(data-add-back-btn="true", data-role='page', ng-controller="Subscribe")
-  div(data-role="header")
-    h3 Subscribe
+  div(data-theme='a', data-role='header')
+    h3
+      | Header
   div(data-role='content')
+    h2
+      | Subscribe
+    div
+      p
+        b
+          | Find a restaurant:
+    div(data-role='fieldcontain')
+      fieldset(data-role='controlgroup')
+        label(for='searchinput3')
+        input#searchinput3(name='', placeholder='', value='', type='search')
+    div(data-role='fieldcontain')
+      fieldset(data-role='controlgroup')
+        label(for='slider1')
+          | Number of weeks
+        input(type='range', name='slider', value='2', min='0', max='10', data-highlight='false')
+    div
+      p
+        b
+          | Percent Discount:       xx%
+    #checkboxes3(data-role='fieldcontain')
+      fieldset(data-role='controlgroup', data-type='vertical', data-mini='true')
+        legend
+          | Choose days:
+        input#checkbox9(name='Sunday', type='checkbox')
+        label(for='checkbox9')
+          | Sunday
+        input#checkbox10(name='', type='checkbox')
+        label(for='checkbox10')
+          | Monday
+        input#checkbox11(name='', type='checkbox')
+        label(for='checkbox11')
+          | Tuesday
+        input#checkbox12(name='', type='checkbox')
+        label(for='checkbox12')
+          | Wednesday
+        input#checkbox13(name='', type='checkbox')
+        label(for='checkbox13')
+          | Thursday
+        input#checkbox14(name='', type='checkbox')
+        label(for='checkbox14')
+          | Friday
+        input#checkbox15(name='', type='checkbox')
+        label(for='checkbox15')
+          | Saturday
+        input#checkbox16(name='', type='checkbox')
+        label(for='checkbox16')
+          | Sunday
+    a(data-role='button', href='#page8')
+      | Select Items
+
 // Manage Subscriptions
 #pageManageSubscriptions(data-add-back-btn="true", data-role='page', ng-controller="ManageSubscriptions")
-  div(data-role="header")
-    h3 Manage Subscriptions
   div(data-role='content')
     div(data-role='navbar', data-iconpos='top')
       ul
@@ -175,11 +191,40 @@
           | Mac's Chili House
           span.ui-li-count
             | Resubscribe
+
 // Lunch Date
-#pageLunchDate(data-add-back-btn="true", data-role='page',ng-controller="LunchDate")
-  div(data-role="header")
-    h3 Lunch Date
+#pageInviteAFriend(data-add-back-btn="true", data-role='page',ng-controller="LunchDate")
+  div(data-theme='a', data-role='header')
+    h3
+      | Header
   div(data-role='content')
+    div(data-role='fieldcontain')
+      fieldset(data-role='controlgroup')
+        label(for='textinput5')
+          | Who do you want to invite?
+        input#textinput5(name='', placeholder='Jane Smith', value='', type='text')
+    div(data-role='fieldcontain')
+      fieldset(data-role='controlgroup')
+        label(for='textinput6')
+          | Where are you eating?
+        input#textinput6(name='', placeholder='Boloco', value='', type='text')
+    div(data-role='fieldcontain')
+      label(for='selectmenu12')
+        | When are you eating?
+      select(name='W', data-theme='c')
+        option(value='option1')
+          | 12:00
+        option(value='value')
+          | 12:15
+        option(value='value')
+          | 12:30
+        option(value='value')
+          | 12:45
+        option(value='value')
+          | 1:00
+    a(data-role='button', href='#page20')
+      | Invite!
+
 // Accounts and Payments
 #pageAccountsPayments(data-add-back-btn="true", data-role='page',ng-controller="AccountsPayments")
   div(data-role="header")
@@ -231,7 +276,7 @@
     div(data-role='fieldcontain')
       label(for='selectmenu1')
         | Favorites
-      select(ng-model="itemSelected",ng-options="value for value in favorites")
+      select(ng-model="itemSelected",ng-options="value as value.name for value in favorites")
     div(data-role='fieldcontain')
       label(for='selectmenu2')
         | Quantity
@@ -256,9 +301,36 @@
           | 9
         option(value='10')
           | 10
-
-    a(data-role='button', data-theme='b', ng-click="")
+    a(data-role='button', data-theme='b', ng-click="oneClick()", href="#pageConfirm")
+      | 1 Click Order
+    a(data-role='button', data-theme='b', ng-click="fullMenu()", href="#pageFullMenuRestaurant")
       | Full Menu
+// Confirm
+#pageConfirm(data-add-back-btn="true", data-role='page',ng-controller="Confirm")
+  div(data-role="header")
+    h3 Confirm Order
+  div(data-role='content')
+    h3 Your order is confirmed.
+    br
+    div
+      div
+        .row-fluid(style='font-size: small;', data-mce-style='font-size: small;')
+          .span1(style='text-decoration: underline;', data-mce-style='text-decoration: underline;')
+            | Item
+          .span1(style='text-decoration: underline;', data-mce-style='text-decoration: underline;')
+            | Qty
+          .span1(style='text-decoration: underline;', data-mce-style='text-decoration: underline;')
+            | Price
+        .row-fluid(ng-repeat="cart in carts",style='font-size: small;', data-mce-style='font-size: small;')
+          .span1
+            | {{cart.name}}
+          .span1
+            | {{cart.quantity}}
+          .span1
+            | ${{cart.price.toFixed(2)}}
+    a(data-role='button', ng-click="ok()")
+      | OK
+
 // Restaurant Subscription Active
 #pageRestaurantSubscriptionActive(data-add-back-btn="true", data-role='page',ng-controller="RestaurantSubscriptionActive")
   div(data-role="header")
@@ -397,7 +469,7 @@
           | ${{total.toFixed(2)}}
     a(data-role='button', data-theme='b', ng-click="addToCart()")
       | Add To Cart
-    a(data-role='button', data-theme='b', ng-click="oneClick()")
+    a(data-role='button', data-theme='b', ng-click="oneClick()", href='#pageConfirm')
       | 1 Click Order
-    a(data-role='button', data-theme='b', ng-click="checkOut()")
+    a(data-role='button', data-theme='b', ng-click="checkOut()", href='#pageConfirm')
       | Checkout
