@@ -219,7 +219,7 @@ exports.getNearbyRestaurantsMap = function(limit,radius,lat,lon,name,callback){
 			}
 		}
 		
-		console.log(outURL);
+		callback(null,outURL);
 	});
 }
 
@@ -243,7 +243,7 @@ exports.getRestaurantByLocuId = function(id,callback){
 			}
 		},
 		error: function(error){
-			console.log(SON);
+      // console.log(SON);
 		}
 	});
 }
@@ -465,17 +465,17 @@ getIntervalDiscount = function(items,interval,business){
 // TEST CLIENT
 // ************************************************************************************************************************
 
-42.38
--71.03
-1600
+// 42.38
+// -71.03
+// 1600
 
 
 //exports.getFavorites("50a8edb407e58a812800337f",0,3,function(err,response){
 //exports.getNearbyRestaurants(3,1600,42.38,-71.03,"",function(err,response){
 //	console.log(response);
 //});
-exports.getNearbyRestaurantsMap(10,1600,"42.3447677","-71.1009621","",function(err,maxRest){
-	console.log("RESULT " + maxRest);
-});
+// exports.getNearbyRestaurantsMap(10,1600,"42.3447677","-71.1009621","",function(err,maxRest){
+//  console.log("RESULT " + maxRest);
+// });
 //exports.getMaxRestaurantForInterval(
 //exports.getMaxDiscountRestaurantPerInterval(null,null);

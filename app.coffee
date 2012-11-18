@@ -141,6 +141,6 @@ app.get "/favoritesDish", (req,res)->
     price: 5.99
   ]
 
-app.get "/", (req,res)->
+# app.get "/", (req,res)->
 
 app.listen(process.env.VCAP_APP_PORT || 3000)
